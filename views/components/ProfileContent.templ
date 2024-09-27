@@ -1,0 +1,32 @@
+package components
+
+import "pong-htmx/models"
+
+templ ProfileContent(user models.User) {
+	<div id="profile-content">
+		<div class="mb-6">
+			<label for="email" class="block mb-2 text-xl">
+				Email
+			</label>
+			<input
+				type="email"
+				id="email"
+				class="w-full bg-gray-800 border border-cyan-300 text-cyan-300 px-4 py-2 rounded focus:outline-none focus:border-cyan-500 disabled:text-gray-500"
+				value={ user.Email }
+				disabled
+			/>
+		</div>
+		<div class="mb-6">
+			<label for="username" class="block mb-2 text-xl">
+				Username
+			</label>
+			<input
+				type="text"
+				id="username"
+				name="username"
+				class="w-full bg-gray-800 border border-cyan-300 text-cyan-300 px-4 py-2 rounded focus:outline-none focus:border-cyan-500"
+				value={ user.Username }
+			/>
+		</div>
+	</div>
+}

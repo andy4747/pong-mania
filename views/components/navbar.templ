@@ -1,0 +1,83 @@
+package components
+
+import (
+"context"
+"pong-htmx/utils"
+"strings"
+)
+
+templ Navbar(ctx context.Context) {
+@navbar(utils.GetUserState(ctx))
+}
+
+templ navbar(userState utils.UserState) {
+<nav class="container h-[10vh] mx-auto flex justify-between items-center px-8 text-neon-blue">
+    <div class="glitch-container">
+        <a class="glitch-text font-extrabold text-3xl cursor-pointer" href="/">PONG MANIA</a>
+    </div>
+    <div class="flex gap-6 text-lg items-center">
+        <a class="cursor-pointer hover:text-neon-green transition-colors duration-300" href="/">Home</a>
+        <a class="cursor-pointer hover:text-neon-green transition-colors duration-300" href="/about">About</a>
+        <a class="cursor-pointer hover:text-neon-green transition-colors duration-300" href="/contact">Contact</a>
+        if !userState.IsAuthenticated {
+        <a class="cursor-pointer text-neon-purple hover:text-neon-pink transition-colors duration-300 font-bold"
+            href="/login">Login</a>
+        } else {
+        @userDropdown(userState)
+        }
+    </div>
+</nav>
+}
+
+templ userDropdown(userState utils.UserState) {
+<div class="relative inline-block text-left">
+    <div>
+        <button type="button"
+            class="flex items-center justify-center w-10 h-10 rounded-full bg-neon-purple text-black text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-neon-blue overflow-hidden"
+            id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+            if strings.Split(userState.ImageUrl, "=")[1] != "" {
+            <img src={ userState.ImageUrl } alt="User profile" class="w-full h-full object-cover" />
+            } else {
+            <img src="/static/assets/AVATAR.svg" alt="User profile" />
+            }
+        </button>
+    </div>
+    <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-gray-900 ring-1 ring-neon-blue ring-opacity-5 divide-y divide-gray-700 focus:outline-none"
+        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="user-dropdown-menu"
+        style="display: none;">
+        <div class="py-1" role="none">
+            <p class="text-neon-green block px-4 py-2 text-sm border-b border-gray-700">
+                { strings.Split(userState.Email,
+                "@")[0] }
+            </p>
+            <a href="/user/profile" class="text-neon-blue hover:bg-gray-800 block px-4 py-2 text-sm" role="menuitem"
+                tabindex="-1" id="user-menu-item-0">Profile</a>
+        </div>
+        <div class="py-1" role="none">
+            <a href="/logout" class="text-neon-pink hover:bg-gray-800 block px-4 py-2 text-sm" role="menuitem"
+                tabindex="-1" id="user-menu-item-2">Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+    const menuButton = document.getElementById('user-menu-button');
+    const dropdownMenu = document.getElementById('user-dropdown-menu');
+
+    menuButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        if (dropdownMenu.style.display === 'none') {
+            dropdownMenu.style.display = 'block';
+        } else {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
+    dropdownMenu.addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+
+    window.addEventListener('click', function () {
+        dropdownMenu.style.display = 'none';
+    });
+</script>
+}

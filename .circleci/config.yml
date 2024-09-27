@@ -1,0 +1,52 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.1.1
+
+jobs:
+  build-and-push:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Check Required Parameters
+          command: |
+            if [ -z "$DOCKER_USERNAME" ]; then
+              echo "DOCKER_USERNAME is not set. Aborting."
+              exit 1
+            fi
+            if [ -z "$DOCKER_PASSWORD" ]; then
+              echo "DOCKER_PASSWORD is not set. Aborting."
+              exit 1
+            fi
+            echo "All required parameters are set."
+            echo "Setting Docker image parameters..."
+            echo "export DOCKER_IMAGE=$DOCKER_USERNAME/$CIRCLE_PROJECT_REPONAME" >> $BASH_ENV
+            echo "export DOCKER_TAG=${CIRCLE_SHA1}" >> $BASH_ENV
+            source $BASH_ENV
+            echo "Docker Image: $DOCKER_IMAGE"
+            echo "Docker Tag: $DOCKER_TAG"
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t $DOCKER_USERNAME/pong-mania:prod -f ./Dockerfile .
+      - run:
+          name: Push built image
+          command: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push $DOCKER_USERNAME/pong-mania:prod
+      
+workflows:
+  build-push-workflow:
+    jobs:
+      - build-and-push:
+          context: dockerhub-credentials
+          filters:
+            branches:
+              only: master

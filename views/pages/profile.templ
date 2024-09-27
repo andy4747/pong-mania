@@ -1,0 +1,32 @@
+package pages
+
+import (
+	"context"
+	"pong-htmx/models"
+	"pong-htmx/utils"
+	"pong-htmx/views/components"
+	"pong-htmx/views/layouts"
+)
+
+templ ProfilePage(ctx context.Context, user models.User) {
+	@layouts.Base() {
+		@components.Navbar(ctx)
+		<div class="bg-black text-cyan-300 h-[90vh] flex flex-col items-center justify-center p-8">
+			<h1 class="text-4xl mb-8 glitch-text" data-text="PLAYER PROFILE">PLAYER PROFILE</h1>
+			<div class="mb-8">
+				@components.ProfileEditImage(utils.UploadImageConfig{DefaultPreviewUrl: "/static/assets/AVATAR.svg",
+					UploadEndpoint: "/user/profile/image", InputName: "profile_image"}, utils.GetUserState(ctx))
+			</div>
+			<form class="w-full max-w-md" hx-post="/user/profile" hx-target="#profile-content">
+				<div id="loading-indicator" class="hidden">Loading...</div>
+				@components.ProfileContent(user)
+				<button
+					type="submit"
+					class="w-full bg-cyan-700 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+				>
+					Update Profile
+				</button>
+			</form>
+		</div>
+	}
+}

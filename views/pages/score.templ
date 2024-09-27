@@ -1,0 +1,17 @@
+package pages
+
+import (
+	"context"
+	"pong-htmx/views/layouts"
+)
+
+templ Score(ctx context.Context) {
+	@layouts.Base() {
+		<div class="flex flex-col items-center justify-center h-screen">
+			<h1 class="text-4xl font-bold mb-4">Game Result</h1>
+			<div class="bg-white shadow-md rounded-lg p-8">
+				// Display the game result data here
+			</div>
+		</div>
+	}
+}

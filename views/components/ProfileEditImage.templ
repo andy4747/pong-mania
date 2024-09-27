@@ -1,0 +1,44 @@
+package components
+
+import "pong-htmx/utils"
+
+templ ProfileEditImage(uploadImageConfig utils.UploadImageConfig, userState utils.UserState) {
+	<div class="flex flex-col items-center gap-4 bg-gray-800 p-8 rounded-lg shadow-md max-w-md mx-auto">
+		if userState.ImageUrl == "" {
+			<img
+				class="w-40 h-40 rounded-full border-4 border-cyan-400 object-cover shadow-sm"
+				src={ uploadImageConfig.DefaultPreviewUrl }
+				alt="profile"
+			/>
+		} else {
+			<img
+				class="w-40 h-40 rounded-full border-4 border-cyan-400 object-cover shadow-sm"
+				src={ userState.ImageUrl }
+				alt="profile"
+			/>
+		}
+		<form
+			id="img-form"
+			class="w-full flex flex-col gap-3 items-center"
+			hx-encoding="multipart/form-data"
+			hx-post={ uploadImageConfig.UploadEndpoint }
+		>
+			<input
+				type="file"
+				name={ uploadImageConfig.InputName }
+				class="w-full p-2 border-2 border-dashed border-cyan-400 rounded-md bg-gray-800 cursor-pointer"
+			/>
+			<button
+				class="px-4 py-2 bg-cyan-400 text-white rounded-md hover:bg-cyan-500 transition duration-300 ease-in-out"
+			>
+				Upload
+			</button>
+			<progress id="progress" value="0" max="100" class="w-full h-4 rounded bg-gray-200"></progress>
+		</form>
+	</div>
+	<script>
+    htmx.on('#img-form', 'htmx:xhr:progress', function (evt) {
+        htmx.find('#progress').setAttribute('value', evt.detail.loaded / evt.detail.total * 100)
+    });
+</script>
+}

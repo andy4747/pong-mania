@@ -1,0 +1,9 @@
+aws_access_key = 
+aws_secret_key = 
+vpc_id = 
+vpc_cidr = "0.0.0.0/0"
+subnet_id = 
+ec2_key_name = 
+ec2_deployment_user = 
+ec2_deployment_password = 
+github_token = 

@@ -1,0 +1,61 @@
+// package layouts
+
+// templ Base() {
+// 	<!DOCTYPE html>
+// 	<html lang="en" class="dark">
+// 		<head>
+// 			<title>Pong</title>
+// 			<meta charset="UTF-8"/>
+// 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+// 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+// 			<script src="https://cdn.tailwindcss.com"></script>
+// 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+// 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+// 			<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"/>
+// 			<link rel="stylesheet" href="/static/styles/style.css"/>
+// 		</head>
+// 		<body class="bg-gray-800">
+// 			{ children... }
+// 		</body>
+// 	</html>
+// }
+
+package layouts
+
+templ Base() {
+	<!DOCTYPE html>
+	<html lang="en" class="dark">
+		<head>
+			<title>Pong Arena</title>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+			<script src="https://unpkg.com/htmx-ext-ws@2.0.0/ws.js"></script>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+			<link rel="stylesheet" href="/static/styles/style.css"/>
+			<script>
+                tailwind.config = {
+                    theme: {
+                        extend: {
+                            colors: {
+                                'neon-blue': '#00f3ff',
+                                'neon-purple': '#9d00ff',
+                                'neon-pink': '#ff00f7',
+                                'neon-green': '#39ff14',
+                            },
+                            fontFamily: {
+                                'game': ['"Press Start 2P"', 'cursive'],
+                            },
+                        },
+                    },
+                }
+            </script>
+		</head>
+		<body class="bg-black text-neon-blue font-game">
+			{ children... }
+		</body>
+	</html>
+}

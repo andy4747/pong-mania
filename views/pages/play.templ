@@ -1,0 +1,17 @@
+package pages
+
+import (
+	"context"
+	"pong-htmx/views/layouts"
+)
+
+templ Play(ctx context.Context, roomID string, playerNumber int) {
+	@layouts.Base() {
+		<div id="game-container" class="flex justify-center items-center h-screen" data-room-id={ roomID }>
+			<div id="canvas-container" class="relative">
+				<canvas id="gameCanvas" class="block"></canvas>
+			</div>
+		</div>
+		<script src="/static/js/game.js"></script>
+	}
+}

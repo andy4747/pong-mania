@@ -1,0 +1,43 @@
+package pages
+
+import (
+	"context"
+	"fmt"
+	"pong-htmx/game"
+	"pong-htmx/views/components"
+	"pong-htmx/views/layouts"
+)
+
+templ Rooms(ctx context.Context, rooms []*game.Room, currentPage, totalPages int) {
+	@layouts.Base() {
+		@components.Navbar(ctx)
+		<div class="container mx-auto mt-8">
+			<h1 class="text-2xl font-bold mb-4">Game Rooms</h1>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				for _, room := range rooms {
+					<div class="bg-gray-800 shadow-md rounded-lg p-4">
+						<h2 class="text-xl font-semibold mb-2">Room ID: { room.ID }</h2>
+						<p>Players: { fmt.Sprint(room.NumPlayers) }/2</p>
+						<p>Ready Players: { fmt.Sprint(room.ReadyPlayers) }</p>
+						if room.Game != nil {
+							<p>Game Duration: { room.Game.RemainingTime.String() }</p>
+							<p>Player 1 Score: { fmt.Sprint(room.Game.Player1.Score) }</p>
+							<p>Player 2 Score: { fmt.Sprint(room.Game.Player2.Score) }</p>
+							<p>Player 1 UserID: { fmt.Sprint(room.Game.Player1.ID) }</p>
+							<p>Player 2 UserID: { fmt.Sprint(room.Game.Player2.ID) }</p>
+						}
+					</div>
+				}
+			</div>
+			<div class="mt-4 flex justify-center">
+				if currentPage > 1 {
+					<a href={ templ.SafeURL(fmt.Sprintf("/rooms?page=%d", currentPage-1)) } class="mx-2 px-4 py-2 bg-blue-500 text-white rounded">Previous</a>
+				}
+				<span class="mx-2 px-4 py-2">Page { fmt.Sprint(currentPage) } of { fmt.Sprint(totalPages) }</span>
+				if currentPage < totalPages {
+					<a href={ templ.SafeURL(fmt.Sprintf("/rooms?page=%d", currentPage+1)) } class="mx-2 px-4 py-2 bg-blue-500 text-white rounded">Next</a>
+				}
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,10 @@
+db.sqlite
+tmp/
+vendor/
+docs/
+*_templ.go
+SECRETS.md
+
+# Terraform
+.terraform/
+tfout

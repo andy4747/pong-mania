@@ -1,0 +1,15 @@
+.git
+db.sqlite
+tmp/
+vendor/
+docs/
+*_templ.go
+SECRETS.md
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*_ssh
+tfout
